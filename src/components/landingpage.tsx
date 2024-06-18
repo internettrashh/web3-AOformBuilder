@@ -77,7 +77,7 @@ export function Landingpage() {
                   alt="Dashboard"
                   className="w-full h-full object-cover"
                   height={500}
-                  src="/placeholder.svg"
+                  src="src/assets/dash.png"
                   style={{
                     aspectRatio: "800/500",
                     objectFit: "cover",
@@ -89,7 +89,7 @@ export function Landingpage() {
               <div className="text-lg md:text-xl">Unlock the Power of Decentralized SaaS</div>
             </div>
             <div className="text-lg md:text-xl">
-              Revolutionize your business with our cutting-edge decentralized SaaS platform.
+              Revolutionize your business with our cutting-edge decentralized Formbuilder platform.
             </div>
             <div className="flex justify-center items-center z-80">
             <Link to="/dashboard" style={{ zIndex: 1000, position: 'relative' }}>
@@ -107,7 +107,7 @@ export function Landingpage() {
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">Revolutionize Your Business</h2>
             <div className="text-lg md:text-xl">
-              Our decentralized SaaS platform empowers you to take control of your data and operations, unlocking new
+              Our decentralized Form Builder platform empowers you to take control of your data and operations, unlocking new
               levels of efficiency and innovation.
             </div>
             <div className="container mx-auto p-6">
@@ -144,10 +144,9 @@ export function Landingpage() {
         </section>
         <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
           <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">Secure and Scalable</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">Free and Scalable</h2>
             <div className="text-lg md:text-xl">
-              Our decentralized infrastructure ensures your data is safe and your application can scale effortlessly to
-              meet your growing needs.
+              Our Highly scalable infrastructure allows you to help gain insights from your community.
             </div>
             <div className="flex justify-center">
               <div className="relative w-full max-w-[600px] h-[400px] rounded-xl overflow-hidden">
@@ -155,7 +154,7 @@ export function Landingpage() {
                   alt="Security"
                   className="w-full h-full object-cover"
                   height={400}
-                  src="/placeholder.svg"
+                  src="src/assets/form.png"
                   style={{
                     aspectRatio: "600/400",
                     objectFit: "cover",
