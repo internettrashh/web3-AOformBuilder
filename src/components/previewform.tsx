@@ -49,7 +49,7 @@ export function Previewform() {
     setTextFieldValues(updatedValues);
   };
   const handleClick = async () => {
-    const allTextsConcatenated = textFieldValues.join(' '); // Concatenate all text field values into a single string
+    const allTextsConcatenated = textFieldValues.join(' / '); // Concatenate all text field values into a single string
     console.log(allTextsConcatenated);
     try {
       const res = await await ao.message({

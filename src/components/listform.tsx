@@ -1,5 +1,5 @@
 
-import { Link,useNavigate} from "react-router-dom"
+import { Link,useNavigate,useLocation} from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu"
@@ -23,7 +23,9 @@ declare global {
 }
 
 export function Listform() {
+
   const navigate = useNavigate(); 
+  const location = useLocation();
   const { connected } = useConnection();
   const ao = connect();
   const processID = "ZmFtKfSfNiKGWD7ERDnnhuZ6WGusdmiE7MWbkSOwsYo";
@@ -62,6 +64,7 @@ export function Listform() {
 const handleCardClick = (post) => {
   // Example action: navigate to a post detail page
   console.log('Card clicked', post);
+  navigate('/analytics', { state: { post } });
   // Navigate to post detail page or perform any other action
 };
 async function fetchPosts() {
@@ -123,11 +126,11 @@ const PostCards = ({ posts }) => {
 
   return (
     <div>
-      {displayedPosts.map((post, index) => (
-        <div key={index}>
-          {/* Render your post card here */}
-        </div>
-      ))}
+      {[...displayedPosts].reverse().map((post, index) => (
+  <div key={displayedPosts.length - 1 - index}>
+    {/* Render your post card here */}
+  </div>
+))}
     </div>
   );
 };
@@ -162,7 +165,7 @@ useEffect(() => {
           </Link>
           <Link
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-900"
-            to="#"
+            to="/analytics"
           >
             <BarChartIcon className="h-5 w-5" />
             Analytics

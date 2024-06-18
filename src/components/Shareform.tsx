@@ -48,7 +48,7 @@ export function Shareform() {
   };
 
   const handleClick = async () => {
-    const allTextsConcatenated = textFieldValues.join(' ');
+    const allTextsConcatenated = textFieldValues.join(' / ' );
     console.log(allTextsConcatenated);
     try {
       const res = await ao.message({

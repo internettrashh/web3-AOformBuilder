@@ -144,7 +144,7 @@ export function Createfrom() {
           </Link>
           <Link
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-900"
-            to="#"
+            to="/analytics"
           >
             <BarChartIcon className="h-5 w-5" />
             Analytics

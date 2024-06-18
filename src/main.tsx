@@ -10,6 +10,7 @@ import { Createfrom } from './components/createfrom';
 import { Previewform } from './components/previewform';
 import { Thankspage } from './components/thankspage';
 import { Shareform } from './components/Shareform';
+import { Analytics } from './components/analytics';
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -36,6 +37,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <Route path="/preview" element={<Previewform/>} />
     <Route path="/end" element={<Thankspage/>} />
     <Route path="/submit" element={<Shareform/>} />
+    <Route path="/analytics" element={<Analytics/>} />
 
    </Routes>      
      </BrowserRouter>
