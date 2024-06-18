@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card } from "@/components/ui/card"
-import { SVGProps } from "react";
+import { SVGProps,useEffect } from "react";
 import {useActiveAddress, ConnectButton, useConnection } from "@arweave-wallet-kit/react";
 import { useState } from "react";
 import { createDataItemSigner, message, dryrun, result, connect } from "@permaweb/aoconnect";
@@ -59,6 +59,88 @@ export function Listform() {
   };
   await register();
 };
+const handleCardClick = (post) => {
+  // Example action: navigate to a post detail page
+  console.log('Card clicked', post);
+  // Navigate to post detail page or perform any other action
+};
+async function fetchPosts() {
+  try {
+    const resl = await ao.message({
+      process: processID,
+      tags: [{ name: "Action", value: "Get-Forms" }],
+      data: "",
+      signer: createDataItemSigner(window.arweaveWallet),
+    });
+    console.log("Dry run result", resl);
+
+    let { Output } = await result({
+      message: resl,
+      process: processID,
+    });
+
+    if (Output && Output.data) {
+      const posts = JSON.parse(Output.data);
+      console.log("Posts", posts);
+      return posts; // Return posts for further processing
+    } else {
+      console.log("Output is not in an expected format.");
+      return []; // Return an empty array in case of unexpected format
+    }
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return []; // Return an empty array in case of error
+  }
+}
+
+const PostCards = ({ posts }) => {
+  const [displayedPosts, setDisplayedPosts] = useState([]);
+  const [postIndex, setPostIndex] = useState(9); // Start with 9 posts
+
+  // Function to load more posts
+  const loadMorePosts = () => {
+    const morePosts = posts.slice(postIndex, postIndex + 9); // Get next 9 posts
+    setDisplayedPosts([...displayedPosts, ...morePosts]);
+    setPostIndex(postIndex + 9);
+  };
+
+  // Handle scroll to load more posts
+  const handleScroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+    loadMorePosts();
+  };
+
+  useEffect(() => {
+    // Initial load
+    setDisplayedPosts(posts.slice(0, 9));
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup on unmount
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [posts]);
+
+  return (
+    <div>
+      {displayedPosts.map((post, index) => (
+        <div key={index}>
+          {/* Render your post card here */}
+        </div>
+      ))}
+    </div>
+  );
+};
+const [posts, setPosts] = useState([]);
+
+
+useEffect(() => {
+  setIsFetching(true);
+  fetchPosts().then(fetchedPosts => {
+    setPosts(fetchedPosts);
+    setIsFetching(false);
+  });
+}, [connected]);
   
   return (
     connected ? 
@@ -142,34 +224,45 @@ export function Listform() {
           </DropdownMenu>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Card className="bg-gray-900 p-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium">Contact Form</h3>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button size="icon" variant="ghost">
-                    <MoveVerticalIcon className="h-5 w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                  <DropdownMenuItem>Delete</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <p className="mt-2 text-sm text-gray-400">A simple contact form for your website.</p>
-            <div className="mt-4 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <CalendarIcon className="h-5 w-5 text-gray-500" />
-                <span className="text-sm text-gray-400">Updated 2 days ago</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <EyeIcon className="h-5 w-5 text-gray-500" />
-                <span className="text-sm text-gray-400">124 views</span>
-              </div>
-            </div>
-          </Card>
+  {posts.map((post, index) => (
+    // Assuming you want to perform some action when the card is clicked
+    <div key={index} onClick={() => handleCardClick(post)} className="cursor-pointer">
+      <Card className="bg-gray-900 p-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-medium">{post.Title}</h3>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="icon" variant="ghost">
+                <MoveVerticalIcon className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuItem>Duplicate</DropdownMenuItem>
+              <DropdownMenuItem>Delete</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <p className="mt-2 text-sm text-gray-400">
+          {post.Questions.length > 0 && post.Questions[0].Body}
+        </p>
+        <div className="mt-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <CalendarIcon className="h-5 w-5 text-gray-500" />
+            <span className="text-sm text-gray-400">Updated 2 days ago</span>
+          </div>
+          <div className="flex items-center gap-2">
+  <EyeIcon className="h-5 w-5 text-gray-500" />
+  <span className="text-sm text-gray-400">
+    {post.FID.length > 10 ? `${post.FID.substring(0, 10)}...` : post.FID}
+  </span>
+</div>
+        </div>
+      </Card>
+    </div>
+  ))}
+
+
           {loading && <div className="loader">Loading...</div>}
           
         </div>
@@ -387,4 +480,3 @@ function SettingsIcon(props:SVGProps<SVGSVGElement>) {
     
   )
 }
-
